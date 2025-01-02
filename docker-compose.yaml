@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:6.0 # Use a versão desejada do MongoDB
+    container_name: mongo-container
+    ports:
+      - "27017:27017" # Mapeia a porta do MongoDB para a máquina host
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin123
+    volumes:
+      - mongo-data:/data/db # Persistência de dados do MongoDB
+
+volumes:
+  mongo-data:
+    driver: local

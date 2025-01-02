@@ -15,13 +15,13 @@ public class Product {
     private UUID productIdentification;
     private String name;
     private int quantity;
-    private BigDecimal value;
+    private BigDecimal price;
 
-    public Product(UUID productIdentification, String name, BigDecimal value, int quantity){
+    public Product(UUID productIdentification, String name, BigDecimal price, int quantity){
         this.productIdentification = productIdentification;
         this.name = name;
         this.quantity = validateQuantity(quantity);
-        this.value = value;
+        this.price = price;
     }
 
     private int validateQuantity(int quantity){
@@ -32,7 +32,7 @@ public class Product {
     }
 
     public BigDecimal getTotalValue(){
-        return BigDecimal.valueOf(this.quantity).multiply(this.value);
+        return BigDecimal.valueOf(this.quantity).multiply(this.price);
     }
 
     @Override

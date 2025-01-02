@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/orders")
 public class OrderController {
 
-
     @Autowired
     private OrderService orderService;
 
@@ -30,5 +29,11 @@ public class OrderController {
         var order = orderService.listOrders();
         var response = order.stream().map(OrderDTO::new).collect(Collectors.toList());
         return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<OrderDTO> getOrder(@PathVariable String id) {
+        var order = orderService.getOrder(id);
+        return ResponseEntity.status(HttpStatus.OK).body(new OrderDTO(order));
     }
 }

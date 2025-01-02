@@ -12,6 +12,18 @@ services:
     volumes:
       - mongo-data:/data/db # Persistência de dados do MongoDB
 
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3.8-management-alpine
+    environment:
+      - RABBITMQ_DEFAULT_USER=myuser
+      - RABBITMQ_DEFAULT_PASS=mypassword
+    ports:
+      # AMQP protocol port
+      - "5672:5672"
+      # HTTP management UI
+      - "15672:15672"
+
 volumes:
   mongo-data:
     driver: local

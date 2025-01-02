@@ -14,16 +14,25 @@ public class OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
     private NotifyExternalSystem notifyExternalSystem;
+
 
     public Order createOrder(OrderDTO orderDTO) {
         var order = orderDTO.toDomain();
+        order.calculateTotalValue();
         orderRepository.save(order);
-        System.out.println("Order created: " + order);
+        notifyExternalSystem.notify(order);
+        orderRepository.save(order);
         return order;
     }
 
     public List<Order> listOrders() {
         return orderRepository.findAll();
+    }
+
+    public Order getOrder(String id) {
+        return orderRepository.findById(id);
     }
 }

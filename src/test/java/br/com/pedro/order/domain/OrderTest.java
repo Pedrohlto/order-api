@@ -87,6 +87,24 @@ class OrderTest {
     }
 
     @Test
+    @DisplayName("Should calculate the total value of an order with discount")
+    void shouldCalculateTotalValueOfOrderWithDiscount(){
+        var localDateTimeNow = LocalDateTime.now();
+        Order order = new Order(UUID.randomUUID(), VALID_PRODUCT_LIST, BigDecimal.valueOf(10.00), localDateTimeNow);
+        BigDecimal totalValue = order.calculateTotalValue();
+        Assertions.assertEquals(BigDecimal.valueOf(170.00), totalValue);
+    }
+
+    @Test
+    @DisplayName("Should validate the discount greater then Zero")
+    void shouldValidateTheDiscountGreaterThenZero(){
+        var localDateTimeNow = LocalDateTime.now();
+        Order order = new Order(UUID.randomUUID(), VALID_PRODUCT_LIST, BigDecimal.valueOf(0), localDateTimeNow);
+        BigDecimal totalValue = order.calculateTotalValue();
+        Assertions.assertEquals(BigDecimal.valueOf(180.00), totalValue);
+    }
+
+    @Test
     void testDate(){
         System.out.println(LocalDateTime.now());
     }

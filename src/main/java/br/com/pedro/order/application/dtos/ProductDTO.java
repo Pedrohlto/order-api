@@ -28,16 +28,16 @@ public class ProductDTO {
 
     @NotNull
     @NotEmpty
-    private BigDecimal value;
+    private BigDecimal price;
 
     public ProductDTO(Product product) {
         this.productIdentification = product.getProductIdentification();
         this.name = product.getName();
         this.quantity = product.getQuantity();
-        this.value = product.getValue();
+        this.price = product.getPrice();
     }
 
     public Product toDomain() {
-        return new Product(productIdentification, name, value, quantity);
+        return new Product(productIdentification, name, price, quantity);
     }
 }

@@ -20,7 +20,7 @@ class ProductTest {
         assertNotNull(product);
         assertEquals(productIdentification, product.getProductIdentification());
         assertEquals("Product 1", product.getName());
-        assertNotNull(product.getValue());
+        assertNotNull(product.getPrice());
     }
 
     @Test
@@ -37,7 +37,7 @@ class ProductTest {
     void shouldReturnFalseWhenComparingAProductWithANullObject(){
         var productIdentification = UUID.randomUUID();
         var product = new Product(productIdentification, "Product 1", BigDecimal.valueOf(50.00),1);
-        assertNotEquals(null, product);
+        assertNotEquals(product,null);
     }
 
     @Test
@@ -45,7 +45,7 @@ class ProductTest {
     void shouldReturnFalseWhenComparingAProductWithAnObjectOfAnotherClass(){
         var productIdentification = UUID.randomUUID();
         var product = new Product(productIdentification, "Product 1", BigDecimal.valueOf(50.00),1);
-        assertNotEquals(new Object(), product);
+        assertNotEquals(product, new Object());
     }
 
     @Test

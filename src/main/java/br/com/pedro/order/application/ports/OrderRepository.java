@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface OrderRepository {
 
-    public void save(Order order);
-    public Order findById(String id);
-    public List<Order> findAll();
+    Order save(Order order);
+    Order findById(String id);
+    List<Order> findAll();
 }

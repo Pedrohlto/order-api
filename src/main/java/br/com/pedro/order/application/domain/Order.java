@@ -58,10 +58,14 @@ public class Order {
     }
 
     public BigDecimal calculateTotalValue() {
-        this.totalValue = this.products.stream().map(Product::getTotalValue).reduce(BigDecimal.ZERO, BigDecimal::add);
+        var productsValue = this.products.stream().map(Product::getTotalValue).reduce(BigDecimal.ZERO, BigDecimal::add);
+        if(discount != null && discount.compareTo(BigDecimal.ZERO) > 0) {
+            this.totalValue = productsValue.subtract(discount);
+        } else {
+            this.totalValue = productsValue;
+        }
         return this.totalValue;
     }
-
     public void orderSent() {
         this.status = OrderStatus.SENT;
     }

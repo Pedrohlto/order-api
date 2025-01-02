@@ -21,7 +21,7 @@ public class OrderRepositoryImpl implements OrderRepository {
     private OrderDocumentRespository orderRepositoryMongo;
 
     @Override
-    public void save(Order order) {
+    public Order save(Order order) {
 
         OrderDocument orderDocument = OrderDocument.builder()
                 .id(order.getOrderIdentification().toString())
@@ -33,20 +33,22 @@ public class OrderRepositoryImpl implements OrderRepository {
                 .build();
 
         orderRepositoryMongo.save(orderDocument);
+        return order;
     }
 
     private static List<ProductDocument> productToProductDocument(Order order) {
         return order.getProducts().stream().map(product -> ProductDocument.builder()
                 .id(product.getProductIdentification().toString())
                 .name(product.getName())
-                .value(product.getValue())
+                .price(product.getPrice())
+                .quantity(product.getQuantity())
                 .build()).collect(Collectors.toList());
     }
 
     @Override
     public Order findById(String id) {
         Optional<OrderDocument> byId = orderRepositoryMongo.findById(id);
-        return byId.map(this::orderDocumentToOrder).orElse(null);
+        return byId.map(this::orderDocumentToOrder).orElseThrow(() -> new RuntimeException("Order not found"));
     }
 
     @Override
@@ -69,6 +71,6 @@ public class OrderRepositoryImpl implements OrderRepository {
                 new Product(UUID.fromString(productDocument.getId())
                         , productDocument.getName()
                         , productDocument.getQuantity()
-                        , productDocument.getValue())).collect(Collectors.toList());
+                        , productDocument.getPrice())).collect(Collectors.toList());
     }
 }

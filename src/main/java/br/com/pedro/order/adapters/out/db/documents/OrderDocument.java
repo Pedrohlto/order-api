@@ -1,7 +1,6 @@
 package br.com.pedro.order.adapters.out.db.documents;
 
 import br.com.pedro.order.application.domain.OrderStatus;
-import br.com.pedro.order.application.domain.Product;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;

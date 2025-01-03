@@ -104,10 +104,6 @@ class OrderTest {
         Assertions.assertEquals(BigDecimal.valueOf(180.00), totalValue);
     }
 
-    @Test
-    void testDate(){
-        System.out.println(LocalDateTime.now());
-    }
 
     @Test
     @DisplayName("Should throw an exception when try to create an order without products")

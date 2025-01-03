@@ -46,9 +46,9 @@ public class OrderRepositoryImpl implements OrderRepository {
     }
 
     @Override
-    public Order findById(String id) {
+    public Optional<Order> findById(String id) {
         Optional<OrderDocument> byId = orderRepositoryMongo.findById(id);
-        return byId.map(this::orderDocumentToOrder).orElseThrow(() -> new RuntimeException("Order not found"));
+        return byId.map(this::orderDocumentToOrder);
     }
 
     @Override

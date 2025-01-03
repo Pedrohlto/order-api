@@ -5,6 +5,8 @@ import br.com.pedro.order.application.domain.OrderStatus;
 import br.com.pedro.order.application.domain.Product;
 import br.com.pedro.order.application.dtos.OrderDTO;
 import br.com.pedro.order.application.dtos.ProductDTO;
+import br.com.pedro.order.application.exceptions.OrderAlreadyExists;
+import br.com.pedro.order.application.exceptions.OrderNotFoundException;
 import br.com.pedro.order.application.ports.NotifyExternalSystem;
 import br.com.pedro.order.application.ports.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,10 +19,10 @@ import org.mockito.MockitoAnnotations;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -94,13 +96,36 @@ class OrderServiceTest {
                 LocalDateTime.now(),
                 OrderStatus.CREATED);
 
-        when(orderRepository.findById(orderId.toString())).thenReturn(order);
+        when(orderRepository.findById(orderId.toString())).thenReturn(Optional.of(order));
 
         var orderDomain = orderService.getOrder(orderId.toString());
 
         assertNotNull(orderDomain);
         assertEquals(orderId, orderDomain.getOrderIdentification());
         verify(orderRepository, times(1)).findById(anyString());
+    }
+
+    @Test
+    @DisplayName("Should validate when Order Already exists")
+    void shouldValidateWhenOrderAlreadyExists() {
+        var orderId = UUID.randomUUID();
+        var order = new Order(orderId,
+                List.of(new Product(UUID.randomUUID(), "Product", 1, BigDecimal.TEN)),
+                BigDecimal.TEN,
+                BigDecimal.ONE,
+                LocalDateTime.now(),
+                OrderStatus.CREATED);
+
+        when(orderRepository.findById(orderId.toString())).thenReturn(Optional.of(order));
+        assertThrows(OrderAlreadyExists.class, () -> orderService.createOrder(new OrderDTO(order)));
+    }
+
+    @Test
+    @DisplayName("Should validate when order not exists")
+    void shouldValidateWhenOrderNotExists() {
+        var orderId = UUID.randomUUID();
+        when(orderRepository.findById(orderId.toString())).thenReturn(Optional.empty());
+        assertThrows(OrderNotFoundException.class, () -> orderService.getOrder(orderId.toString()));
     }
 
 }

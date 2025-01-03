@@ -82,7 +82,7 @@ class OrderRepositoryImplTest {
         var order = createOrder();
         order.forEach((key, value) -> {
             when(orderDocumentRespository.findById(anyString())).thenReturn(java.util.Optional.of(value));
-            var orderFound = orderRepositoryImpl.findById(key.getOrderIdentification().toString());
+            var orderFound = orderRepositoryImpl.findById(key.getOrderIdentification().toString()).get();
             assertNotNull(orderFound);
             verify(orderDocumentRespository, times(1)).findById(key.getOrderIdentification().toString());
             assertEquals(value.getId(), orderFound.getOrderIdentification().toString());
